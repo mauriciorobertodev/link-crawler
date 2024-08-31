@@ -30,11 +30,18 @@ let win: BrowserWindow | null;
 
 function createWindow() {
     win = new BrowserWindow({
+        width: 1900,
+        height: 700,
         icon: path.join(process.env.VITE_PUBLIC, 'electron-vite.svg'),
         webPreferences: {
             preload: path.join(__dirname, 'preload.mjs'),
+            devTools: true,
         },
     });
+
+    win.webContents.openDevTools();
+    // win.fullScreen = true;
+    // win.maximize();
 
     // Test active push message to Renderer-process.
     win.webContents.on('did-finish-load', () => {
@@ -67,4 +74,6 @@ app.on('activate', () => {
     }
 });
 
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+    createWindow();
+});
