@@ -1,4 +1,5 @@
 import { ipcRenderer, contextBridge } from 'electron';
+import { EventName } from './../shared/events';
 
 // --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld('ipcRenderer', {
@@ -27,4 +28,9 @@ contextBridge.exposeInMainWorld('versions', {
     node: () => process.versions.node,
     chrome: () => process.versions.chrome,
     electron: () => process.versions.electron,
+});
+
+contextBridge.exposeInMainWorld('scrapping', {
+    startScrapping: (website: string) => ipcRenderer.invoke(EventName.SCRAPPING_START, website),
+    stopScrapping: () => ipcRenderer.invoke(EventName.SCRAPPING_STOP),
 });
